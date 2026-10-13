@@ -1,0 +1,527 @@
+/* ==========================================================================
+   NEUMORPHIC DUAL-PANE SIDE MENU (INSPIRED BY USER DESIGN)
+   Clean, frosted-clay, pill-capsule navigation with collapsed rail & expanded panes
+   ========================================================================== */
+
+/* Outer Sidebar Container */
+.side-menu-outer {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  padding: 18px 0 18px 18px;
+  background-color: #ebedf2;
+  box-sizing: border-box;
+  z-index: 50;
+  flex-shrink: 0;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+/* --------------------------------------------------------------------------
+   STATE 1: COLLAPSED FLOATING PILL RAIL
+   -------------------------------------------------------------------------- */
+.side-menu-rail {
+  position: relative;
+  width: 68px;
+  height: calc(100vh - 36px);
+  background: #fdfdfd;
+  border-radius: 9999px;
+  box-shadow:
+    0 20px 40px -10px rgba(15, 23, 42, 0.08),
+    0 1px 3px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 0;
+  box-sizing: border-box;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Top Sparkle Insignia */
+.rail-sparkle-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #18181b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-bottom: 28px;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.rail-sparkle-btn:hover {
+  transform: rotate(20deg) scale(1.08);
+  color: #059669;
+}
+
+/* Vertical Icon Stack */
+.rail-icon-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+}
+
+.rail-icon-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #4b5563;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.rail-icon-btn:hover {
+  color: #18181b;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Active Circular White Pill Highlight */
+.rail-icon-btn.active {
+  background: #ffffff;
+  color: #18181b;
+  box-shadow:
+    0 6px 16px -2px rgba(15, 23, 42, 0.12),
+    0 2px 4px rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(226, 232, 240, 0.7);
+}
+
+/* Message Notification Dot (Pink badge) */
+.rail-ping-dot {
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  width: 6.5px;
+  height: 6.5px;
+  border-radius: 50%;
+  background: #f43f5e;
+  box-shadow: 0 0 6px rgba(244, 63, 94, 0.7);
+}
+
+/* Thin Vertical Slider Track with Centered Indicator Dot */
+.rail-slider-track {
+  position: relative;
+  width: 1.5px;
+  height: 64px;
+  background: #e5e7eb;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rail-slider-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #9ca3af;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: top 0.2s ease;
+}
+
+/* Curved Notch Expander Tab on Rail Right Edge */
+.rail-expand-notch {
+  position: absolute;
+  right: -15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 48px;
+  background: #fdfdfd;
+  border-radius: 0 18px 18px 0;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-left: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #64748b;
+  box-shadow: 4px 4px 14px rgba(15, 23, 42, 0.08);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 20;
+}
+
+.rail-expand-notch:hover {
+  color: #18181b;
+  right: -18px;
+  width: 25px;
+  background: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   STATE 2: EXPANDED FLOATING DUAL-PANE CARD
+   -------------------------------------------------------------------------- */
+.side-menu-expanded-card {
+  position: relative;
+  height: calc(100vh - 36px);
+  background: #fbfbfd;
+  border-radius: 36px;
+  box-shadow:
+    0 28px 60px -15px rgba(15, 23, 42, 0.12),
+    0 4px 16px rgba(15, 23, 42, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  display: flex;
+  overflow: hidden;
+  box-sizing: border-box;
+  animation: menuCardIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes menuCardIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateX(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   COLUMN 1: MAIN MENU
+   -------------------------------------------------------------------------- */
+.menu-col-main {
+  width: 265px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 18px 18px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.menu-col-main::-webkit-scrollbar {
+  display: none;
+}
+
+/* Menu Header with Sparkle */
+.menu-main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.menu-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #18181b;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+
+.menu-collapse-btn {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.menu-collapse-btn:hover {
+  background: #f1f5f9;
+  color: #18181b;
+}
+
+/* Nav Item List */
+.menu-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Standard Nav Item */
+.menu-nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 18px;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.menu-nav-item:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.menu-item-left {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: inherit;
+}
+
+.menu-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  color: #4b5563;
+}
+
+.menu-nav-item:hover .menu-item-icon {
+  color: #111827;
+}
+
+/* Pill Count Badge (Black pill with white number) */
+.menu-badge-pill {
+  background: #18181b;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-expand-plus {
+  font-size: 15px;
+  font-weight: 400;
+  color: #9ca3af;
+  line-height: 1;
+}
+
+/* Active Main Item (Solid Black Pill Capsule) */
+.menu-nav-item.active-dark {
+  background: #18181b;
+  color: #ffffff;
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(24, 24, 27, 0.22);
+}
+
+.menu-nav-item.active-dark .menu-item-icon {
+  color: #ffffff;
+}
+
+.menu-nav-item.active-dark .menu-expand-dash {
+  font-size: 18px;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 1;
+}
+
+/* Nested Tree Branch Container */
+.menu-tree-container {
+  display: flex;
+  flex-direction: column;
+  margin: 4px 0 6px 18px;
+  padding-left: 16px;
+  border-left: 1.5px solid #e5e7eb;
+  gap: 5px;
+}
+
+/* Tree Branch Sub-item */
+.menu-tree-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 12px;
+  border-radius: 16px;
+  background: transparent;
+  border: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.menu-tree-item:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+/* Active Tree Sub-item (White Pill Capsule with Soft Shadow) */
+.menu-tree-item.active {
+  background: #ffffff;
+  color: #18181b;
+  font-weight: 600;
+  border-radius: 9999px;
+  box-shadow:
+    0 4px 14px rgba(15, 23, 42, 0.08),
+    0 1px 3px rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(226, 232, 240, 0.7);
+}
+
+.menu-tree-item.active svg {
+  color: #18181b;
+}
+
+/* --------------------------------------------------------------------------
+   COLUMN 2: CONTEXT FLYOUT SUB-PANE
+   -------------------------------------------------------------------------- */
+.menu-col-sub {
+  width: 235px;
+  height: 100%;
+  background: rgba(248, 249, 251, 0.85);
+  border-left: 1px solid rgba(226, 232, 240, 0.7);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.menu-col-sub::-webkit-scrollbar {
+  display: none;
+}
+
+/* Sub-pane Section Divider */
+.sub-pane-divider {
+  width: 100%;
+  height: 1px;
+  background: #e5e7eb;
+  margin: 14px 0;
+}
+
+/* Sub-pane Section Header */
+.sub-pane-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+  padding: 4px 8px;
+  margin-bottom: 6px;
+}
+
+.sub-header-icon {
+  color: #9ca3af;
+  display: flex;
+  align-items: center;
+}
+
+/* Sub-pane Action Items */
+.sub-pane-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: transparent;
+  border: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.sub-pane-item:hover {
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+.sub-pane-item.active {
+  background: #ffffff;
+  color: #18181b;
+  font-weight: 600;
+  border-radius: 9999px;
+  box-shadow:
+    0 4px 14px rgba(15, 23, 42, 0.08),
+    0 1px 3px rgba(15, 23, 42, 0.04);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.sub-pane-item.active svg {
+  color: #18181b;
+}
+
+/* Code Icon Tag Styling */
+.code-tag-icon {
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: #f1f5f9;
+}
+
+.sub-pane-item:hover .code-tag-icon,
+.sub-pane-item.active .code-tag-icon {
+  color: #18181b;
+  background: #e2e8f0;
+}
+
+/* User Footer inside menu */
+.menu-footer-user {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.user-compact-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.user-avatar-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #18181b;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-name-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #1e293b;
+}

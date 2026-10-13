@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT v4.5 — Sanjivani Sugar Factory AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="chatgpt-layout">
+    
+    <!-- Left Navigation Sidebar (ChatGPT style) -->
+    <aside class="chatgpt-sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <!-- New Chat Button -->
+        <button class="new-chat-btn" id="newChatBtn">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12h14"></path>
+          </svg>
+          <span>New Chat</span>
+        </button>
+
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="Toggle Sidebar">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="9" y1="3" x2="9" y2="21"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Navigation & History -->
+      <div class="sidebar-scroll">
+        <div class="sidebar-section-label">MODE VIEW</div>
+        <div class="nav-links">
+          <button class="nav-item active" id="navChatBtn">
+            <span class="nav-icon">💬</span>
+            <span>AI Chatbot (MCP)</span>
+          </button>
+          <button class="nav-item" id="navLedgerBtn">
+            <span class="nav-icon">📊</span>
+            <span>Farmers DB Ledger</span>
+          </button>
+        </div>
+
+        <div class="sidebar-section-label">FACTORY PROMPTS</div>
+        <div class="history-list">
+          <button class="history-item" data-query="Which farmers from Kopargaon village have pending payments for Sanjivani Sugar Factory, and what is the total pending amount?">
+            <span class="history-icon">🌾</span>
+            <span class="history-title">Kopargaon Pending Payments</span>
+          </button>
+          <button class="history-item" data-query="Give me a complete sugarcane supply and payment summary for all farmers who supplied more than 150 tons.">
+            <span class="history-icon">🚜</span>
+            <span class="history-title">Top Suppliers (>150 Tons)</span>
+          </button>
+          <button class="history-item" data-query="What is the overall factory summary of total sugarcane tons, total amount paid, and total pending in INR?">
+            <span class="history-icon">📈</span>
+            <span class="history-title">Factory Balance Sheet</span>
+          </button>
+          <button class="history-item" data-query="Tell me about Ramesh Patil and Balasaheb Vikhe. What are their supplied tons and payment status?">
+            <span class="history-icon">👤</span>
+            <span class="history-title">Key Farmers Audit</span>
+          </button>
+          <button class="history-item" data-query="List all farmers from Rahata village with their tons supplied and amount paid.">
+            <span class="history-icon">📍</span>
+            <span class="history-title">Rahata Village Audit</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- User Profile / Footer in Sidebar -->
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">सं</div>
+          <div class="user-info">
+            <span class="user-name">Sanjivani Karkhana</span>
+            <span class="user-tier">MongoDB Atlas • Season 2026</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="chatgpt-main">
+      
+      <!-- Top Navigation Bar -->
+      <header class="chatgpt-header">
+        <div class="header-left">
+          <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+          
+          <!-- ChatGPT Model Selector Pill -->
+          <div class="model-dropdown">
+            <button class="model-select-btn">
+              <span class="model-brand-name">ChatGPT</span>
+              <span class="model-version-tag">4.5</span>
+              <span class="chevron">▾</span>
+            </button>
+            <div class="model-subinfo">Model Context Protocol • Stdio Transport</div>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- View Switcher Tabs -->
+          <div class="view-switcher">
+            <button class="view-tab active" id="tabChat">Chat</button>
+            <button class="view-tab" id="tabLedger">Database Ledger</button>
+          </div>
+          
+          <div class="status-pill-header">
+            <span class="pulse-dot"></span>
+            <span>Atlas Live</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- VIEW 1: CHATGPT INTERFACE -->
+      <div id="viewChat" class="content-view active">
+        <div class="chat-scroll-container" id="chatScroll">
+          
+          <!-- Empty State (ChatGPT Welcome Screen) -->
+          <div id="chatEmptyState" class="chat-welcome">
+            <div class="chatgpt-symbol">
+              <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.75">
+                <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm0 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"></path>
+              </svg>
+            </div>
+            
+            <h1 class="welcome-heading">What can I audit for Sanjivani Factory today?</h1>
+            <p class="welcome-sub">
+              Ask anything about sugarcane deliveries, village procurement, or pending balances. Responses are generated via OpenAI using live Model Context Protocol tools.
+            </p>
+
+            <!-- 4 ChatGPT Suggestion Cards -->
+            <div class="suggestion-cards-grid">
+              <div class="suggestion-card" data-query="Which farmers from Kopargaon village have pending payments for Sanjivani Sugar Factory, and what is the total pending amount?">
+                <div class="card-prompt-title">Kopargaon Village Audit</div>
+                <div class="card-prompt-sub">Find growers with pending payment dues and calculate total pending INR</div>
+              </div>
+
+              <div class="suggestion-card" data-query="Give me a complete sugarcane supply and payment summary for all farmers who supplied more than 150 tons.">
+                <div class="card-prompt-title">Top Cane Suppliers</div>
+                <div class="card-prompt-sub">Inspect high-volume farmers who supplied &gt; 150 metric tons of cane</div>
+              </div>
+
+              <div class="suggestion-card" data-query="What is the overall factory summary of total sugarcane tons, total amount paid, and total pending in INR?">
+                <div class="card-prompt-title">Factory Balance Sheet</div>
+                <div class="card-prompt-sub">Get overall crushing metrics, total settled amount, and total outstanding</div>
+              </div>
+
+              <div class="suggestion-card" data-query="Tell me about Ramesh Patil and Balasaheb Vikhe. What are their supplied tons and payment status?">
+                <div class="card-prompt-title">Key Growers Ledger</div>
+                <div class="card-prompt-sub">Look up records for specific farmers across Kopargaon and Loni</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chat Messages Container -->
+          <div id="messagesContainer" class="messages-container hidden">
+            <!-- Messages appended dynamically -->
+          </div>
+
+          <!-- Typing Indicator -->
+          <div id="typingIndicator" class="typing-container hidden">
+            <div class="avatar-bot">AI</div>
+            <div class="typing-bubble">
+              <div class="typing-status">
+                <span class="typing-spinner"></span>
+                <span id="typingStatusText">Running MCP Tool on MongoDB Atlas...</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Floating ChatGPT Input Capsule -->
+        <div class="chat-input-wrapper">
+          <form id="chatForm" class="chat-input-box">
+            <!-- Tools/Action Pill -->
+            <button type="button" class="action-btn" id="quickActionsBtn" title="MCP Tools Active">
+              <span class="mcp-badge">MCP</span>
+            </button>
+
+            <!-- Input Text Area -->
+            <input 
+              type="text" 
+              id="messageInput" 
+              class="message-input" 
+              placeholder="Message ChatGPT v4.5 (e.g., Audit Kopargaon pending balances)..." 
+              autocomplete="off" 
+              required
+            />
+
+            <!-- Send Button (ChatGPT signature circle with up arrow) -->
+            <button type="submit" id="sendBtn" class="send-btn" title="Send message">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="19" x2="12" y2="5"></line>
+                <polyline points="5 12 12 5 19 12"></polyline>
+              </svg>
+            </button>
+          </form>
+
+          <div class="disclaimer-text">
+            ChatGPT v4.5 with Model Context Protocol. Connected to MongoDB Atlas <code>sanjivani_factory</code>.
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 2: DATABASE LEDGER & METRICS -->
+      <div id="viewLedger" class="content-view">
+        <div class="ledger-container">
+          
+          <!-- Top KPI Ribbon -->
+          <div class="kpi-grid">
+            <div class="kpi-box">
+              <div class="kpi-tag">TOTAL CANE INTAKE</div>
+              <div class="kpi-num" id="kpiTotalTons">--</div>
+              <div class="kpi-desc">Metric Tons Crushed</div>
+            </div>
+
+            <div class="kpi-box">
+              <div class="kpi-tag">TOTAL DISBURSED</div>
+              <div class="kpi-num text-success" id="kpiTotalPaid">--</div>
+              <div class="kpi-desc">Transferred to Bank Accounts</div>
+            </div>
+
+            <div class="kpi-box">
+              <div class="kpi-tag">TOTAL PENDING</div>
+              <div class="kpi-num text-warning" id="kpiTotalPending">--</div>
+              <div class="kpi-desc">Pending Final Settlement</div>
+            </div>
+
+            <div class="kpi-box">
+              <div class="kpi-tag">GROWERS REGISTERED</div>
+              <div class="kpi-num" id="kpiTotalFarmers">--</div>
+              <div class="kpi-desc">Across 7 Taluka Villages</div>
+            </div>
+          </div>
+
+          <!-- Village Distribution -->
+          <div class="village-section">
+            <div class="section-title">Village Supply Distribution</div>
+            <div id="villageBars" class="village-bar-list"></div>
+          </div>
+
+          <!-- Filterable Table -->
+          <div class="table-section">
+            <div class="table-toolbar">
+              <div class="section-title">Registered Farmers Directory</div>
+              
+              <div class="toolbar-filters">
+                <input type="text" id="searchInput" class="search-field" placeholder="Search farmer or village..." />
+                <select id="villageSelect" class="select-field">
+                  <option value="All">All Villages</option>
+                  <option value="Kopargaon">Kopargaon</option>
+                  <option value="Shirdi">Shirdi</option>
+                  <option value="Rahata">Rahata</option>
+                  <option value="Sangamner">Sangamner</option>
+                  <option value="Loni">Loni</option>
+                  <option value="Kolhar">Kolhar</option>
+                  <option value="Puntamba">Puntamba</option>
+                </select>
+                <label class="checkbox-label">
+                  <input type="checkbox" id="pendingOnlyToggle" />
+                  <span>Pending Only</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="db-table">
+                <thead>
+                  <tr>
+                    <th>FARMER NAME</th>
+                    <th>VILLAGE</th>
+                    <th class="text-right">SUPPLIED</th>
+                    <th class="text-right">PAID (INR)</th>
+                    <th class="text-right">PENDING (INR)</th>
+                    <th class="text-center">STATUS</th>
+                  </tr>
+                </thead>
+                <tbody id="farmersTableBody"></tbody>
+              </table>
+            </div>
+
+            <div class="table-status-bar">
+              <span id="recordCountLabel">Showing 10 records</span>
+              <span>Source: MongoDB Atlas (<code>farmers</code> collection)</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
